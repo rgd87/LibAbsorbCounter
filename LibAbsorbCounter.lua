@@ -4,7 +4,7 @@ Author: d87
 --]================]
 
 
-local MAJOR, MINOR = "LibAbsorbCounter", 2
+local MAJOR, MINOR = "LibAbsorbCounter", 3
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -53,6 +53,7 @@ local shieldSpells = {
 	[17]    = 1, -- Power Word: Shield (Priest)
 	[47753] = 1, -- Divine Aegis (Priest)
 	[86273] = 1, -- Iluminated Healing (Paladin)
+    [77535] = 1, -- Blood Shield (DK)
 }
 
 
