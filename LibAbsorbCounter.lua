@@ -4,7 +4,7 @@ Author: d87
 --]================]
 
 
-local MAJOR, MINOR = "LibAbsorbCounter", 1
+local MAJOR, MINOR = "LibAbsorbCounter", 2
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -165,8 +165,18 @@ function lib:UnitGetTotalAbsorbs(unit)
     end
 end
 
+function f:PLAYER_ENTERING_WORLD()
+    local unit = next(absorbAuras)
+    while unit do
+        absorbAuras[unit] = nil
+        InvalidateCache(unit)
+        unit = next(absorbAuras)
+    end
+end
+
 function callbacks.OnUsed()
     f:RegisterEvent("UNIT_AURA")
+    f:RegisterEvent("PLAYER_ENTERING_WORLD")
 end
 
 function callbacks.OnUnused()
