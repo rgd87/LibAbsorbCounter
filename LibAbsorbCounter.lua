@@ -4,7 +4,7 @@ Author: d87
 --]================]
 
 
-local MAJOR, MINOR = "LibAbsorbCounter", 3
+local MAJOR, MINOR = "LibAbsorbCounter", 4
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -104,10 +104,17 @@ function f:UNIT_AURA(event, unit, info)
         local unitAbsorbAuras = absorbAuras[unit]
         for _, aIID in pairs(info.updatedAuraInstanceIDs) do
 			local aura = GetAuraDataByAuraInstanceID(unit, aIID)
-            if shieldSpells[aura.spellId] then
-                unitAbsorbAuras[aIID] = aura.points[1] or 0
-                shouldInvalidateCache = true
-                -- print('updated shield', aIID, aura.name, aura.points[1])
+            if aura then -- apparently it can be nil
+                if shieldSpells[aura.spellId] then
+                    unitAbsorbAuras[aIID] = aura.points[1] or 0
+                    shouldInvalidateCache = true
+                    -- print('updated shield', aIID, aura.name, aura.points[1])
+                end
+            else -- try to remove in that case
+                if unitAbsorbAuras[aIID] then
+                    unitAbsorbAuras[aIID] = nil
+                    shouldInvalidateCache = true
+                end
             end
         end
 	end
